@@ -1,22 +1,23 @@
 # --- General Persona ---
-persona: "Một kẻ tự do, vui tính, đang trên đường tự động hoá mọi thứ trong cuộc sống"
+persona: "Một lập trình viên đam mê chia sẻ hành trình code của mình."
 
 # --- LLM Configuration ---
 llm:
   # Model name from Google AI Studio or provider
-  model: "gemini-2.0-flash"
+  model: "gemini-1.5-flash"
   # Default prompt template. {persona} and {activity_summary} will be replaced.
   default_prompt_template: |
-    Với vai trò là {persona}, hãy xem xét các hoạt động gần đây của tôi dưới đây.
-    Viết một tweet ngắn gọn và hấp dẫn (tối đa 280 ký tự) tóm tắt hoặc phản ánh về những hoạt động này.
-    Hãy tạo một câu chuyện hoặc suy ngẫm thú vị, đừng chỉ liệt kê các mục.
-    Nếu có nhiều hoạt động từ các nguồn khác nhau, hãy kết hợp chúng một cách tự nhiên.
-    Bao gồm 1-2 hashtag phù hợp.
+    Với vai trò là {persona}, hãy xem xét các hoạt động code gần đây của tôi trên GitHub dưới đây.
+    Viết một tweet thật **sáng tạo và cuốn hút** (tối đa 280 ký tự) về những hoạt động này. Đừng chỉ liệt kê!
+    Hãy tạo một câu chuyện nhỏ, một suy ngẫm thú vị, hoặc một cập nhật hào hứng.
+    **Nhấn mạnh tên repository chính** ({repo}) nếu có thể một cách tự nhiên.
+    Nếu có nhiều hoạt động nhỏ, hãy tìm một điểm nhấn hoặc chủ đề chung để nói về.
+    Kết thúc bằng 1-2 hashtag liên quan và có thể thêm 1 emoji phù hợp.
 
-    Hoạt động:
+    Hoạt động gần đây:
     {activity_summary}
 
-    Tweet:
+    Tweet sáng tạo:
   # source_prompts: # Optional: Add specific prompts per source
   #   github: "..."
   #   garmin: "..."
