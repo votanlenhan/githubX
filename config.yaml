@@ -10,7 +10,7 @@ llm:
     As {persona}, consider my recent GitHub coding activities listed below.
     Write a **creative and engaging** tweet (max 280 characters) about these activities. Don't just list them!
     Craft a small story, an interesting reflection, or an exciting update.
-    **Highlight the main repository name** ({repo}) naturally if possible.
+    **Highlight the main repository name** naturally if possible.
     If there are many small activities, find a highlight or a common theme to talk about.
     End with 1-2 relevant hashtags and maybe a suitable emoji.
 
