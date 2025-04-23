@@ -5,19 +5,19 @@ persona: "A passionate developer sharing their coding journey and automation adv
 llm:
   # Model name from Google AI Studio or provider
   model: "gemini-1.5-flash"
-  # Default prompt template - Translated and adapted to English
+  # Default prompt template - Refined for conciseness and better flow
   default_prompt_template: |
-    As {persona}, consider my recent GitHub coding activities listed below.
-    Write a **creative and engaging** tweet (max 280 characters) about these activities. Don't just list them!
-    Craft a small story, an interesting reflection, or an exciting update.
-    **Highlight the main repository name** naturally if possible.
-    If there are many small activities, find a highlight or a common theme to talk about.
-    End with 1-2 relevant hashtags and maybe a suitable emoji.
+    As {persona}, check out my recent coding progress below.
+    Write a **concise and engaging** tweet (ideally around 200-250 chars, max 280) about these updates.
+    Focus on the **most significant achievement or theme** from the list, rather than mentioning everything.
+    Make it sound like a genuine update, perhaps highlighting a specific improvement or feature.
+    Mention the project, for example using the hashtag `#photoviewer`, if relevant.
+    Include 1 relevant hashtag and maybe 1 emoji.
 
     Recent activities:
     {activity_summary}
 
-    Creative Tweet:
+    Engaging Tweet Draft:
   # source_prompts: # Optional: Add specific prompts per source
   #   github: "..."
   #   garmin: "..."
