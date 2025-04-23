@@ -5,19 +5,19 @@ persona: "A passionate developer sharing their coding journey and automation adv
 llm:
   # Model name from Google AI Studio or provider
   model: "gemini-1.5-flash"
-  # Default prompt template - Refined for conciseness and better flow
+  # Default prompt template - Enhanced to include technical details
   default_prompt_template: |
     As {persona}, check out my recent coding progress below.
     Write a **concise and engaging** tweet (ideally around 200-250 chars, max 280) about these updates.
-    Focus on the **most significant achievement or theme** from the list, rather than mentioning everything.
-    Make it sound like a genuine update, perhaps highlighting a specific improvement or feature.
+    Focus on the **most significant achievement or theme**. Make it sound like a genuine update.
+    **Try to mention key technical details, libraries, or concepts** (e.g., React, Python, API integration) if they are apparent from the commit messages.
     Mention the project, for example using the hashtag `#photoviewer`, if relevant.
     Include 1 relevant hashtag and maybe 1 emoji.
 
     Recent activities:
     {activity_summary}
 
-    Engaging Tweet Draft:
+    Engaging Tech Tweet Draft:
   # source_prompts: # Optional: Add specific prompts per source
   #   github: "..."
   #   garmin: "..."
