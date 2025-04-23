@@ -17,13 +17,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      # - name: Install dependencies # Temporarily removed
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Simple Test Step # Replaced original run step
-        run: echo "Simplified daily_report.yml is visible!"
+      - name: Simple Test Step # Keep simplified run step for now
+        run: echo "Simplified daily_report.yml is visible! Dependencies step restored."
       # - name: Run update script # Temporarily removed original step
       #   env:
       #     GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
