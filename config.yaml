@@ -26,7 +26,7 @@ llm:
       {activity_summary}
       Write an **upbeat and motivational** tweet (max 280 chars) about this fitness activity.
       Mention the distance and type (use 'workout' or 'activity' if type is 'Other').
-      **If available, naturally weave in a metric like average heart rate ({avg_hr} bpm) or calories burned ({calories} cals).**
+      **If available, naturally weave in a metric like average heart rate or calories burned.**
       Keep it positive and concise.
       Include 1 relevant fitness hashtag (e.g., #fitness, #workout, #garmin) and maybe 1 emoji 💪.
       Fitness Update Tweet:
