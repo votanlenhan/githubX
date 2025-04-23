@@ -69,6 +69,9 @@ def get_activity(username: str | None, password: str | None, activity_format: st
                 # Extract relevant details (adjust keys based on garminconnect output)
                 activity_id = activity.get('activityId')
                 activity_type = activity.get('activityType', {}).get('typeKey', 'unknown')
+                # --- Add logging for raw activity type --- 
+                print(f"  [Garmin Source Debug] Raw activity type for ID {activity_id}: {activity_type}") 
+                # -------------------------------------------
                 start_time_str = activity.get('startTimeGMT') # Example: "2023-10-27 10:00:00"
                 distance_meters = activity.get('distance') # Usually in meters
                 duration_seconds = activity.get('duration') # Usually in seconds
