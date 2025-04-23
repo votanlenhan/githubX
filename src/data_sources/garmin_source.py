@@ -69,40 +69,43 @@ def get_activity(username: str | None, password: str | None, activity_format: st
                 # Extract relevant details (adjust keys based on garminconnect output)
                 activity_id = activity.get('activityId')
                 activity_type = activity.get('activityType', {}).get('typeKey', 'unknown')
-                # --- Add logging for raw activity type --- 
                 print(f"  [Garmin Source Debug] Raw activity type for ID {activity_id}: {activity_type}") 
+                start_time_str = activity.get('startTimeGMT')
+                distance_meters = activity.get('distance')
+                duration_seconds = activity.get('duration')
+                # --- Attempt to extract additional metrics ---
+                avg_hr = activity.get('averageHR')
+                max_hr = activity.get('maxHR')
+                calories = activity.get('calories')
+                print(f"  [Garmin Source Debug] Metrics for ID {activity_id}: AvgHR={avg_hr}, Cals={calories}")
                 # -------------------------------------------
-                start_time_str = activity.get('startTimeGMT') # Example: "2023-10-27 10:00:00"
-                distance_meters = activity.get('distance') # Usually in meters
-                duration_seconds = activity.get('duration') # Usually in seconds
-                # Add more fields as needed: calories, avgHr, etc.
 
-                # Convert start time to datetime object with timezone
                 try:
                     start_time = datetime.fromisoformat(start_time_str.replace(" ", "T") + "+00:00")
                 except (TypeError, ValueError):
-                    start_time = datetime.now(timezone.utc) # Fallback
+                    start_time = datetime.now(timezone.utc)
 
-                # Convert distance to km
                 distance_km = (distance_meters / 1000.0) if distance_meters else 0.0
 
-                # Create summary using the format from config
-                summary = "Unknown activity" # Default summary
+                summary = "Unknown activity"
                 try:
                     # Use a dictionary for formatting to handle missing keys gracefully
                     format_data = {
                         'activity_type': activity_type.replace('_', ' ').title(),
                         'distance': distance_km,
-                        'duration': duration_seconds, # You might want to format this (e.g., HH:MM:SS)
-                        # Add other potential format keys here
+                        'duration': duration_seconds,
+                        # --- Add new metrics to format_data --- 
+                        'avg_hr': avg_hr if avg_hr is not None else "N/A",
+                        'max_hr': max_hr if max_hr is not None else "N/A",
+                        'calories': int(calories) if calories is not None else "N/A", # Convert calories to int if possible
+                        # ---------------------------------------
                     }
                     summary = activity_format.format(**format_data)
                 except KeyError as e:
-                    print(f"[Garmin Source] Warning: Key '{e}' not found in activity data or format string for activity ID {activity_id}. Using default summary.", file=sys.stderr)
+                    print(f"[Garmin Source] Warning: Key '{e}' not found...", file=sys.stderr)
                 except Exception as e:
-                    print(f"[Garmin Source] Warning: Error formatting summary for activity ID {activity_id}: {e}. Using default summary.", file=sys.stderr)
-
-                # Create the standardized Activity dictionary
+                    print(f"[Garmin Source] Warning: Error formatting summary...: {e}", file=sys.stderr)
+                
                 activity_entry: Activity = {
                     "source": "garmin",
                     "timestamp": start_time,
@@ -112,7 +115,11 @@ def get_activity(username: str | None, password: str | None, activity_format: st
                         "activity_id": activity_id,
                         "distance_km": distance_km,
                         "duration_seconds": duration_seconds,
-                        # Add other raw details if needed
+                        # --- Add raw metrics to details --- 
+                        "average_hr": avg_hr,
+                        "max_hr": max_hr,
+                        "calories": calories,
+                        # ----------------------------------
                     },
                     "url": f"https://connect.garmin.com/modern/activity/{activity_id}" if activity_id else None
                 }

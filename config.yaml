@@ -21,11 +21,12 @@ llm:
       Try to mention **key technical details or libraries** if apparent.
       Include 1 relevant tech hashtag and maybe 1 emoji.
       Engaging Tech Tweet Draft:
-    garmin: | # Prompt focused on fitness activity
+    garmin: | # Prompt focused on fitness activity with metrics
       As {persona}, reflecting on my workout today:
       {activity_summary}
       Write an **upbeat and motivational** tweet (max 280 chars) about this fitness activity.
-      Mention the distance if available. **If the activity type provided is 'Other', refer to it simply as 'workout' or 'activity'. Otherwise, mention the specific activity type.**
+      Mention the distance and type (use 'workout' or 'activity' if type is 'Other').
+      **If available, naturally weave in a metric like average heart rate ({avg_hr} bpm) or calories burned ({calories} cals).**
       Keep it positive and concise.
       Include 1 relevant fitness hashtag (e.g., #fitness, #workout, #garmin) and maybe 1 emoji 💪.
       Fitness Update Tweet:
@@ -45,8 +46,8 @@ data_sources:
     # Environment variable names for Garmin credentials
     username_env_var: GARMIN_USERNAME
     password_env_var: GARMIN_PASSWORD
-    # Format for Garmin activity summary
-    activity_format: "- Completed a {distance:.1f} km {activity_type}" # Example format
+    # Updated format to include HR and calories placeholders
+    activity_format: "- Completed a {distance:.1f} km {activity_type} (Avg HR: {avg_hr} bpm, Cals: {calories})"
   # instagram:
   #   enabled: false
   #   # ... config ...
