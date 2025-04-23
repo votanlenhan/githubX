@@ -27,11 +27,18 @@ def run_update():
 
     # 1. Load Configuration
     config = load_config()
+    # ---- DEBUG: Print config['llm'] immediately after loading ----
+    print(f"[DEBUG] config.get('llm') right after load_config: {config.get('llm')}")
+    # ----------------------------------------------------------
     if not config:
         print("Exiting due to configuration loading failure.", file=sys.stderr)
         return
 
+    # --- Get LLM config ONCE ---
     llm_config = config.get('llm', {})
+    print(f"[DEBUG] llm_config obtained once: {llm_config}") # Debug this once
+    # -------------------------
+
     persona = config.get('persona', 'A developer sharing their journey.')
     gemini_api_key = get_secret("GEMINI_API_KEY") # Assume fixed env var name for LLM key
 
@@ -45,7 +52,9 @@ def run_update():
     # -------------------------------------------------------------------
 
     enabled_sources_config = config.get('data_sources', {})
+    # --- Use llm_config obtained earlier --- 
     source_prompts = llm_config.get('source_prompts', {})
+    # ---------------------------------------
     source_module_map = {
         "github": "src.data_sources.github_source",
         "garmin": "src.data_sources.garmin_source",
@@ -118,7 +127,7 @@ def run_update():
                 # Assume generate_posts returns a LIST of tweet strings
                 generated_posts_texts = generate_posts(
                     source_activities,
-                    llm_config,
+                    llm_config, # Pass the whole llm_config
                     persona,
                     gemini_api_key,
                     specific_prompt_template=specific_prompt # Pass the specific prompt
@@ -149,10 +158,14 @@ def run_update():
         twitter_config = posting_config.get('targets', {}).get('twitter', {})
         max_posts = posting_config.get('max_posts_per_run', 1)
         sleep_time = posting_config.get('sleep_between_posts', 90) # Get the sleep time
-        enable_follow_up = twitter_config.get('enable_follow_up', False) # Check flag
-        follow_up_prompts = config.get('llm', {}).get('follow_up_prompts', {})
-        # ---- DEBUG: Print loaded follow-up prompts ----
-        print(f"[DEBUG] Loaded follow-up prompts: {follow_up_prompts}")
+        enable_follow_up = twitter_config.get('enable_follow_up', False)
+        
+        # --- Revised access: Use llm_config obtained earlier --- 
+        follow_up_prompts = llm_config.get('follow_up_prompts', {})
+        # -------------------------------------------------------
+        
+        # ---- DEBUG: Print loaded follow-up prompts (Kept for comparison) ----
+        print(f"[DEBUG] Loaded follow-up prompts from llm_config: {follow_up_prompts}")
         # -----------------------------------------------
 
         content_to_send = generated_content_list[:max_posts]
@@ -196,7 +209,7 @@ def run_update():
                                 comment_text = generate_follow_up_comment(
                                     original_tweet_text=original_tweet_text,
                                     activity=first_activity,
-                                    llm_config=llm_config,
+                                    llm_config=llm_config, # Pass the whole llm_config
                                     persona=persona, # Pass persona just in case
                                     gemini_api_key=gemini_api_key,
                                     specific_follow_up_prompt=follow_up_prompt
