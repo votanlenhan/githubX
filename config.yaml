@@ -13,24 +13,24 @@ llm:
     Include 1 relevant hashtag. Tweet:
   # Source-specific prompts for distinct posts
   source_prompts:
-    github: | # Prompt focused on dev work
-      As {persona}, check out my recent coding progress on GitHub:
+    github: | # Prompt focused on dev work with 'Lucas Vo' tone
+      As {persona}, reflect on my recent GitHub coding journey:
       {activity_summary}
-      Write a **concise and engaging** tweet (ideally ~200 chars, max 280) about the key updates.
-      Focus on the **most significant achievement or theme**.
-      Try to mention **key technical details or libraries** if apparent.
-      Include 1 relevant tech hashtag and maybe 1 emoji.
+      Write a **concise, reflective, yet determined** tweet (~200-250 chars, max 280) about these updates, in the 'Lucas Vo' tone.
+      Acknowledge the effort or challenge, but focus on the **learning or progress made**. Frame it as part of the development journey.
+      Try to mention **key technical details or concepts** naturally.
       **Do not include placeholders like `[link]` or `[URL]` in the tweet.**
-      Engaging Tech Tweet Draft:
-    garmin: | # Prompt focused on fitness activity with metrics
-      As {persona}, reflecting on my workout today:
+      End with 1 relevant tech hashtag and maybe a reflective emoji 🤔 or determined emoji 💪.
+      Reflective Tech Tweet Draft:
+    garmin: | # Prompt focused on fitness activity with 'Lucas Vo' tone
+      As {persona}, reflecting on today's physical challenge:
       {activity_summary}
-      Write an **upbeat and motivational** tweet (max 280 chars) about this fitness activity.
-      Mention the distance and type (use 'workout' or 'activity' if type is 'Other').
-      **If available, naturally weave in a metric like average heart rate or calories burned.**
+      Write an **upbeat but reflective** tweet (max 280 chars) about this fitness activity, in the 'Lucas Vo' tone.
+      Mention the distance and type (use 'workout' or 'activity' if type is 'Other'). Briefly mention a metric (HR/cals) if available.
+      Acknowledge the effort ("Pushed through...", "Tough but rewarding..."), but focus on the feeling of accomplishment or resilience.
       Keep it positive and concise.
-      Include 1 relevant fitness hashtag (e.g., #fitness, #workout, #garmin) and maybe 1 emoji 💪.
-      Fitness Update Tweet:
+      Include 1 relevant fitness hashtag and maybe 1 suitable emoji (e.g., 💪, 🙏, 🌱).
+      Resilient Fitness Update:
 
 # --- Data Sources Configuration ---
 data_sources:
