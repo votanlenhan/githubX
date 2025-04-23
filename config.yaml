@@ -26,7 +26,7 @@ data_sources:
   github:
     enabled: true
     # Environment variable name holding the GitHub username
-    username_env_var: votanlenhan
+    username_env_var: GITHUB_USERNAME
     # Environment variable name holding the GitHub Personal Access Token
     pat_env_var: USER_GITHUB_PAT
     # Optional: Define how GitHub activity should appear in the {activity_summary} for the LLM
