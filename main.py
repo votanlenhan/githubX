@@ -36,7 +36,7 @@ def run_update():
 
     # --- Get LLM config ONCE ---
     llm_config = config.get('llm', {})
-    print(f"[DEBUG] llm_config obtained once: {llm_config}") # Debug this once
+    # print(f"[DEBUG] llm_config obtained once: {llm_config}") # Debug this once - No longer needed
     # -------------------------
 
     persona = config.get('persona', 'A developer sharing their journey.')
@@ -160,12 +160,12 @@ def run_update():
         sleep_time = posting_config.get('sleep_between_posts', 90) # Get the sleep time
         enable_follow_up = twitter_config.get('enable_follow_up', False)
         
-        # --- Revised access: Use llm_config obtained earlier --- 
-        follow_up_prompts = llm_config.get('follow_up_prompts', {})
-        # -------------------------------------------------------
+        # --- Corrected access to follow_up_prompts (nested inside source_prompts) --- 
+        follow_up_prompts = llm_config.get('source_prompts', {}).get('follow_up_prompts', {})
+        # --------------------------------------------------------------------------
         
-        # ---- DEBUG: Print loaded follow-up prompts (Kept for comparison) ----
-        print(f"[DEBUG] Loaded follow-up prompts from llm_config: {follow_up_prompts}")
+        # ---- DEBUG: Check the correctly loaded follow-up prompts ----
+        print(f"[DEBUG] Follow-up prompts dictionary: {follow_up_prompts}")
         # -----------------------------------------------
 
         content_to_send = generated_content_list[:max_posts]
@@ -201,7 +201,7 @@ def run_update():
                         if enable_follow_up and first_activity:
                             # ---- DEBUG: Print source_key and lookup result ----
                             print(f"[DEBUG] Attempting follow-up for source_key: '{source_key}'")
-                            follow_up_prompt = follow_up_prompts.get(source_key)
+                            follow_up_prompt = follow_up_prompts.get(source_key) # Now this should work
                             print(f"[DEBUG] Result of follow_up_prompts.get('{source_key}'): {follow_up_prompt is not None}")
                             # ---------------------------------------------------
                             if follow_up_prompt:
