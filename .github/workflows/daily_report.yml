@@ -29,7 +29,7 @@ jobs:
         env:
           # Map ALL secrets defined as *_env_var in config.yaml here
           # These names MUST match the secret names created in GitHub repo settings
-          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+          GH_USERNAME: ${{ secrets.GH_USERNAME }}
           USER_GITHUB_PAT: ${{ secrets.USER_GITHUB_PAT }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           X_API_KEY: ${{ secrets.X_API_KEY }}
