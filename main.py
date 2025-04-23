@@ -151,6 +151,9 @@ def run_update():
         sleep_time = posting_config.get('sleep_between_posts', 90) # Get the sleep time
         enable_follow_up = twitter_config.get('enable_follow_up', False) # Check flag
         follow_up_prompts = config.get('llm', {}).get('follow_up_prompts', {})
+        # ---- DEBUG: Print loaded follow-up prompts ----
+        print(f"[DEBUG] Loaded follow-up prompts: {follow_up_prompts}")
+        # -----------------------------------------------
 
         content_to_send = generated_content_list[:max_posts]
         print(f"Attempting to send {len(content_to_send)} primary posts (out of {len(generated_content_list)} generated).")
@@ -183,7 +186,11 @@ def run_update():
 
                         # --- Attempt Follow-up Comment ---
                         if enable_follow_up and first_activity:
+                            # ---- DEBUG: Print source_key and lookup result ----
+                            print(f"[DEBUG] Attempting follow-up for source_key: '{source_key}'")
                             follow_up_prompt = follow_up_prompts.get(source_key)
+                            print(f"[DEBUG] Result of follow_up_prompts.get('{source_key}'): {follow_up_prompt is not None}")
+                            # ---------------------------------------------------
                             if follow_up_prompt:
                                 print(f"Generating follow-up comment for {source_key} tweet...")
                                 comment_text = generate_follow_up_comment(
