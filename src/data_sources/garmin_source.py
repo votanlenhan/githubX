@@ -39,31 +39,31 @@ def get_activity(username: str | None, password: str | None, activity_format: st
         return activities
 
     print(f"[Garmin Source] Attempting to fetch activity for user: {username}")
-
+    
+    client = None # Initialize client to None
     try:
         # Initialize Garmin client
-        # Using with statement ensures logout even if errors occur
-        with Garmin(username, password) as client:
-            print("[Garmin Source] Login successful.")
+        client = Garmin(username, password)
+        client.login()
+        print("[Garmin Source] Login successful.")
 
-            # Define time range (e.g., last 24 hours)
-            end_date = datetime.now(timezone.utc).date()
-            start_date = end_date - timedelta(days=1)
-            print(f"[Garmin Source] Fetching activities from {start_date} to {end_date}...")
+        # Define time range (e.g., last 24 hours)
+        end_date = datetime.now(timezone.utc).date()
+        start_date = end_date - timedelta(days=1)
+        print(f"[Garmin Source] Fetching activities from {start_date} to {end_date}...")
 
-            # Fetch activities (adjust limit as needed)
-            garmin_activities = client.get_activities_by_date(
-                start_date.isoformat(),
-                end_date.isoformat()
-                # Can add activity_type here, e.g., activitytype="running"
-            )
+        # Fetch activities (adjust limit as needed)
+        garmin_activities = client.get_activities_by_date(
+            start_date.isoformat(),
+            end_date.isoformat()
+            # Can add activity_type here, e.g., activitytype="running"
+        )
 
-            if not garmin_activities:
-                print("[Garmin Source] No activities found in the specified date range.")
-                return activities
-
+        if not garmin_activities:
+            print("[Garmin Source] No activities found in the specified date range.")
+            # No need to return here, finally block will handle logout
+        else:
             print(f"[Garmin Source] Found {len(garmin_activities)} activities. Processing...")
-
             # Process fetched activities
             for activity in garmin_activities:
                 # Extract relevant details (adjust keys based on garminconnect output)
@@ -123,11 +123,16 @@ def get_activity(username: str | None, password: str | None, activity_format: st
     except GarminConnectTooManyRequestsError:
         print("[Garmin Source] Error: Too many requests. Garmin Connect may be rate-limiting.", file=sys.stderr)
     except Exception as e:
-        # Catch other potential errors during login or data fetching
-        print(f"[Garmin Source] An unexpected error occurred: {e}", file=sys.stderr)
+        print(f"[Garmin Source] An unexpected error occurred during processing: {e}", file=sys.stderr)
         # Consider re-raising or logging traceback for debugging
-        # import traceback
-        # traceback.print_exc()
+    finally:
+        # Ensure logout is called if client was initialized and logged in
+        if client and client.logged_in:
+             try:
+                 client.logout()
+                 print("[Garmin Source] Logout successful.")
+             except Exception as e:
+                 print(f"[Garmin Source] Error during logout: {e}", file=sys.stderr)
 
     print(f"[Garmin Source] Finished processing. Returning {len(activities)} activities.")
     return activities
