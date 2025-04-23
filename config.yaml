@@ -25,9 +25,9 @@ llm:
       As {persona}, reflecting on my workout today:
       {activity_summary}
       Write an **upbeat and motivational** tweet (max 280 chars) about this fitness activity.
-      Mention the type of activity and maybe distance or a feeling.
+      Mention the distance if available. **If the activity type provided is 'Other', refer to it simply as 'workout' or 'activity'. Otherwise, mention the specific activity type.**
       Keep it positive and concise.
-      Include 1 relevant fitness hashtag (e.g., #fitness, #running, #garmin) and maybe 1 emoji 💪.
+      Include 1 relevant fitness hashtag (e.g., #fitness, #workout, #garmin) and maybe 1 emoji 💪.
       Fitness Update Tweet:
 
 # --- Data Sources Configuration ---
