@@ -20,6 +20,7 @@ llm:
       Focus on the **most significant achievement or theme**.
       Try to mention **key technical details or libraries** if apparent.
       Include 1 relevant tech hashtag and maybe 1 emoji.
+      **Do not include placeholders like `[link]` or `[URL]` in the tweet.**
       Engaging Tech Tweet Draft:
     garmin: | # Prompt focused on fitness activity with metrics
       As {persona}, reflecting on my workout today:
