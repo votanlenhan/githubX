@@ -1,10 +1,9 @@
 name: Daily Activity Post - githubX
 
 on:
-  schedule:
-    # Runs every day at 7:00 AM UTC (adjust as needed)
-    - cron: "0 7 * * *"
-  workflow_dispatch: # Allows manual triggering
+  # schedule: # Temporarily removed
+  #   - cron: "0 7 * * *"
+  workflow_dispatch: # Keep manual trigger
 
 jobs:
   build_and_post:
@@ -18,24 +17,20 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+      # - name: Install dependencies # Temporarily removed
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install -r requirements.txt
 
-      - name: Run update script
-        env:
-          # Map ALL secrets defined as *_env_var in config.yaml here
-          # These names MUST match the secret names created in GitHub repo settings
-          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-          USER_GITHUB_PAT: ${{ secrets.USER_GITHUB_PAT }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          X_API_KEY: ${{ secrets.X_API_KEY }}
-          X_API_SECRET: ${{ secrets.X_API_SECRET }}
-          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
-          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
-          # Add other secrets here if you enable more sources/targets
-          # GARMIN_USERNAME: ${{ secrets.GARMIN_USERNAME }}
-          # GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
-          # DRY_RUN: "false" # Optional: set to "true" in secrets for testing
-        run: python main.py
+      - name: Simple Test Step # Replaced original run step
+        run: echo "Simplified daily_report.yml is visible!"
+      # - name: Run update script # Temporarily removed original step
+      #   env:
+      #     GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+      #     USER_GITHUB_PAT: ${{ secrets.USER_GITHUB_PAT }}
+      #     GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      #     X_API_KEY: ${{ secrets.X_API_KEY }}
+      #     X_API_SECRET: ${{ secrets.X_API_SECRET }}
+      #     X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+      #     X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+      #   run: python main.py
