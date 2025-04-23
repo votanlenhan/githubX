@@ -59,7 +59,7 @@ posting:
   # Limit the total number of tweets generated and posted per run
   max_posts_per_run: 3
   # Delay in seconds between posting multiple tweets (if LLM generates more than one)
-  sleep_between_posts: 15
+  sleep_between_posts: 90
 
   targets:
     twitter:
