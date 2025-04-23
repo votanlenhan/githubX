@@ -35,9 +35,11 @@ def generate_posts(all_activities: list[Activity], llm_config: dict, persona: st
             activity_summary=activity_summary_str
         )
 
-        print(f"\n--- [LLM Generator] Sending Prompt ---
+        print(f"""
+--- [LLM Generator] Sending Prompt ---
 {prompt}
--------------------------------------\n")
+-------------------------------------
+""")
 
         response = model.generate_content(prompt)
         generated_text = response.text.strip()
