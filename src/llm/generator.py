@@ -5,7 +5,7 @@ from ..config_loader import get_secret # Import từ cùng package cấp cao hơ
 # Định nghĩa lại kiểu dữ liệu chuẩn (hoặc import từ một module chung)
 Activity = dict[str, any]
 
-def generate_posts(all_activities: list[Activity], llm_config: dict, persona: str, gemini_api_key: str) -> list[str]:
+def generate_posts(all_activities: list[Activity], llm_config: dict, persona: str, gemini_api_key: str, specific_prompt_template: str | None = None) -> list[str]:
     """Tạo nội dung bài đăng mạng xã hội dựa trên danh sách các hoạt động đã chuẩn hóa."""
     if not all_activities:
         print("[LLM Generator] No activities provided to generate posts.")
@@ -14,23 +14,23 @@ def generate_posts(all_activities: list[Activity], llm_config: dict, persona: st
     print("[LLM Generator] Generating post(s) using LLM...")
 
     model_name = llm_config.get('model', 'gemini-pro')
-    prompt_template = llm_config.get('default_prompt_template')
+    prompt_template_to_use = specific_prompt_template if specific_prompt_template else llm_config.get('default_prompt_template')
 
     if not gemini_api_key:
         print("[LLM Generator] Error: Gemini API key not found.", file=sys.stderr)
         return []
-    if not prompt_template:
-        print("[LLM Generator] Error: Prompt template not found in config.", file=sys.stderr)
+    if not prompt_template_to_use:
+        print("[LLM Generator] Error: No valid prompt template found (neither specific nor default in config).", file=sys.stderr)
         return []
 
     try:
         genai.configure(api_key=gemini_api_key)
         model = genai.GenerativeModel(model_name)
 
-        activity_summary_lines = [act.get('summary', 'Hoạt động không rõ') for act in all_activities]
+        activity_summary_lines = [act.get('summary', 'Activity details unclear') for act in all_activities]
         activity_summary_str = "\n".join(activity_summary_lines)
 
-        prompt = prompt_template.format(
+        prompt = prompt_template_to_use.format(
             persona=persona,
             activity_summary=activity_summary_str
         )
