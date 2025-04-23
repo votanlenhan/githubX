@@ -1,0 +1,66 @@
+# --- General Persona ---
+persona: "Một lập trình viên đam mê chia sẻ hành trình code của mình."
+
+# --- LLM Configuration ---
+llm:
+  # Model name from Google AI Studio or provider
+  model: "gemini-2.0-flash"
+  # Default prompt template. {persona} and {activity_summary} will be replaced.
+  default_prompt_template: |
+    Với vai trò là {persona}, hãy xem xét các hoạt động gần đây của tôi dưới đây.
+    Viết một tweet ngắn gọn và hấp dẫn (tối đa 280 ký tự) tóm tắt hoặc phản ánh về những hoạt động này.
+    Hãy tạo một câu chuyện hoặc suy ngẫm thú vị, đừng chỉ liệt kê các mục.
+    Nếu có nhiều hoạt động từ các nguồn khác nhau, hãy kết hợp chúng một cách tự nhiên.
+    Bao gồm 1-2 hashtag phù hợp.
+
+    Hoạt động:
+    {activity_summary}
+
+    Tweet:
+  # source_prompts: # Optional: Add specific prompts per source
+  #   github: "..."
+  #   garmin: "..."
+
+# --- Data Sources Configuration ---
+data_sources:
+  github:
+    enabled: true
+    # Environment variable name holding the GitHub username
+    username_env_var: votanlenhan
+    # Environment variable name holding the GitHub Personal Access Token
+    pat_env_var: USER_GITHUB_PAT
+    # Optional: Define how GitHub activity should appear in the {activity_summary} for the LLM
+    activity_format: "- Đã làm việc trên repo {repo}: {message}"
+  # garmin:
+  #   enabled: false
+  #   username_env_var: GARMIN_USERNAME
+  #   password_env_var: GARMIN_PASSWORD
+  #   activity_format: "- Hoàn thành bài tập {activity_type} dài {distance} km."
+  # instagram:
+  #   enabled: false
+  #   # ... config ...
+  #   activity_format: "- Đã đăng ảnh mới: {caption}"
+
+# --- Posting Configuration ---
+posting:
+  # Limit the total number of tweets generated and posted per run
+  max_posts_per_run: 3
+  # Delay in seconds between posting multiple tweets (if LLM generates more than one)
+  sleep_between_posts: 15
+
+  targets:
+    twitter:
+      enabled: true
+      # Environment variable names for Twitter API credentials
+      api_key_env_var: X_API_KEY
+      api_secret_env_var: X_API_SECRET
+      access_token_env_var: X_ACCESS_TOKEN
+      access_token_secret_env_var: X_ACCESS_TOKEN_SECRET
+    # --- Placeholder for future targets ---
+    # linkedin:
+    #   enabled: false
+    #   # ... config ...
+# --- Other Settings ---
+# settings:
+#   timezone: "Asia/Ho_Chi_Minh" # Example
+#   dry_run_env_var: "DRY_RUN" # Optional environment variable to enable dry run
