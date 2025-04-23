@@ -16,7 +16,7 @@ llm:
     github: | # Prompt focused on dev work with 'Lucas Vo' tone
       As {persona}, reflect on my recent GitHub coding journey:
       {activity_summary}
-      Write a **concise, reflective, yet determined** tweet (~200-250 chars, max 280) about these updates, in the 'Lucas Vo' tone.
+      Write a **concise, reflective, yet determined** tweet (~240 chars, max 280) about these updates, in the 'Lucas Vo' tone.
       Acknowledge the effort or challenge, but focus on the **learning or progress made**. Frame it as part of the development journey.
       Try to mention **key technical details or concepts** naturally.
       **Do not include placeholders like `[link]` or `[URL]` in the tweet.**
