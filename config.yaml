@@ -57,9 +57,9 @@ data_sources:
 # --- Posting Configuration ---
 posting:
   # Limit the total number of tweets generated and posted per run
-  max_posts_per_run: 3
+  max_posts_per_run: 1 # Temporarily set to 1 for testing rate limits
   # Delay in seconds between posting multiple tweets (if LLM generates more than one)
-  sleep_between_posts: 90
+  sleep_between_posts: 90 # Keep increased delay for now
 
   targets:
     twitter:
