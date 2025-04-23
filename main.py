@@ -2,7 +2,7 @@ import sys
 import time
 from datetime import datetime, timezone
 import importlib # Needed to dynamically import data sources
-import random # For randomized sleep
+# import random # Temporarily commented out for testing
 
 # Import base modules
 from src.config_loader import load_config, get_secret
@@ -12,15 +12,15 @@ from src.posting import twitter_poster # Only twitter for now
 def run_update():
     """Main coordinating function for the update process."""
     
-    # --- Randomized Start Delay ---
-    sleep_minutes = random.randint(0, 240) # Random delay between 0 and 240 minutes (4 hours)
-    if sleep_minutes > 0:
-      print(f"Sleeping for {sleep_minutes} minutes to randomize start time...")
-      time.sleep(sleep_minutes * 60)
-      print("Waking up and starting the process...")
-    else:
-      print("Starting process immediately (no random delay).")
-    # -----------------------------
+    # # --- Randomized Start Delay (Temporarily Disabled) ---
+    # sleep_minutes = random.randint(0, 240) # Random delay between 0 and 240 minutes (4 hours)
+    # if sleep_minutes > 0:
+    #   print(f"Sleeping for {sleep_minutes} minutes to randomize start time...")
+    #   time.sleep(sleep_minutes * 60)
+    #   print("Waking up and starting the process...")
+    # else:
+    #   print("Starting process immediately (no random delay).")
+    # # -----------------------------------------------------
 
     print(f"=== Starting githubX Run at {datetime.now(timezone.utc).isoformat()} ===")
 
