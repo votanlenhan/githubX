@@ -41,7 +41,7 @@ data_sources:
     # Optional: Define how GitHub activity should appear in the {activity_summary} for the LLM
     activity_format: "- Worked on repo {repo}: {message}" # Translated to English
   garmin:
-    enabled: false # Keep disabled until garmin_source.py is ready
+    enabled: true # Keep disabled until garmin_source.py is ready
     # Environment variable names for Garmin credentials
     username_env_var: GARMIN_USERNAME
     password_env_var: GARMIN_PASSWORD
