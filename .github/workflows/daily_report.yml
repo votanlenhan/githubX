@@ -22,15 +22,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Simple Test Step # Keep simplified run step for now
-        run: echo "Simplified daily_report.yml is visible! Dependencies step restored."
-      # - name: Run update script # Temporarily removed original step
-      #   env:
-      #     GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-      #     USER_GITHUB_PAT: ${{ secrets.USER_GITHUB_PAT }}
-      #     GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      #     X_API_KEY: ${{ secrets.X_API_KEY }}
-      #     X_API_SECRET: ${{ secrets.X_API_SECRET }}
-      #     X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
-      #     X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
-      #   run: python main.py
+      # - name: Simple Test Step # Remove this test step
+      #   run: echo "Simplified daily_report.yml is visible! Dependencies step restored."
+      - name: Run update script # Restore original step
+        env:
+          # Map ALL secrets defined as *_env_var in config.yaml here
+          # These names MUST match the secret names created in GitHub repo settings
+          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+          USER_GITHUB_PAT: ${{ secrets.USER_GITHUB_PAT }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+          # Add other secrets here if you enable more sources/targets
+          # GARMIN_USERNAME: ${{ secrets.GARMIN_USERNAME }}
+          # GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
+          # DRY_RUN: "false" # Optional: set to "true" in secrets for testing
+        run: python main.py
