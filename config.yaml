@@ -1,23 +1,23 @@
 # --- General Persona ---
-persona: "Một lập trình viên đam mê chia sẻ hành trình code của mình."
+persona: "A passionate developer sharing their coding journey and automation adventures."
 
 # --- LLM Configuration ---
 llm:
   # Model name from Google AI Studio or provider
   model: "gemini-1.5-flash"
-  # Default prompt template. {persona} and {activity_summary} will be replaced.
+  # Default prompt template - Translated and adapted to English
   default_prompt_template: |
-    Với vai trò là {persona}, hãy xem xét các hoạt động code gần đây của tôi trên GitHub dưới đây.
-    Viết một tweet thật **sáng tạo và cuốn hút** (tối đa 280 ký tự) về những hoạt động này. Đừng chỉ liệt kê!
-    Hãy tạo một câu chuyện nhỏ, một suy ngẫm thú vị, hoặc một cập nhật hào hứng.
-    **Nhấn mạnh tên repository chính** ({repo}) nếu có thể một cách tự nhiên.
-    Nếu có nhiều hoạt động nhỏ, hãy tìm một điểm nhấn hoặc chủ đề chung để nói về.
-    Kết thúc bằng 1-2 hashtag liên quan và có thể thêm 1 emoji phù hợp.
+    As {persona}, consider my recent GitHub coding activities listed below.
+    Write a **creative and engaging** tweet (max 280 characters) about these activities. Don't just list them!
+    Craft a small story, an interesting reflection, or an exciting update.
+    **Highlight the main repository name** ({repo}) naturally if possible.
+    If there are many small activities, find a highlight or a common theme to talk about.
+    End with 1-2 relevant hashtags and maybe a suitable emoji.
 
-    Hoạt động gần đây:
+    Recent activities:
     {activity_summary}
 
-    Tweet sáng tạo:
+    Creative Tweet:
   # source_prompts: # Optional: Add specific prompts per source
   #   github: "..."
   #   garmin: "..."
