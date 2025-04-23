@@ -32,6 +32,24 @@ llm:
       Include 1 relevant fitness hashtag and maybe 1 suitable emoji (e.g., 💪, 🙏, 🌱).
       Resilient Fitness Update:
 
+    # ---- NEW: Follow-up Comment Prompts ----
+    follow_up_prompts:
+      github: | # Prompt for GitHub follow-up comment
+        Original tweet: {original_tweet_text}
+        Activity details: {activity_summary}
+        Relevant link: {activity_url} # Use the commit/activity URL
+        Write a brief follow-up comment (max 280 chars) providing a bit more context or a link.
+        Maybe link directly to the most relevant commit/activity mentioned.
+        Keep the 'Lucas Vo' reflective tone.
+        Follow-up Comment Draft:
+      garmin: | # Prompt for Garmin follow-up comment
+        Original tweet: {original_tweet_text}
+        Activity details: {activity_summary} # Includes metrics like HR/Cals
+        Relevant link: {activity_url} # Garmin activity URL
+        Write a brief follow-up comment (max 280 chars) perhaps adding another detail (like duration if not mentioned) or a related thought.
+        Keep the 'Lucas Vo' upbeat but reflective tone.
+        Follow-up Comment Draft:
+
 # --- Data Sources Configuration ---
 data_sources:
   github:
@@ -64,7 +82,9 @@ posting:
   targets:
     twitter:
       enabled: true
-      # Environment variable names for Twitter API credentials
+      # ---- NEW: Enable Follow-up Comment ----
+      enable_follow_up: true # Set to false to disable threading
+      # ---------------------------------------
       api_key_env_var: X_API_KEY
       api_secret_env_var: X_API_SECRET
       access_token_env_var: X_ACCESS_TOKEN

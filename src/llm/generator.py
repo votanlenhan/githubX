@@ -82,6 +82,86 @@ def generate_posts(all_activities: list[Activity], llm_config: dict, persona: st
         print(f"[LLM Generator] Error generating report with LLM: {e}", file=sys.stderr)
         return []
 
+# ---- NEW Function for Follow-up Comments ----
+def generate_follow_up_comment(
+    original_tweet_text: str,
+    activity: Activity, # Pass the single activity dictionary
+    llm_config: dict,
+    persona: str, # Persona might not be needed if prompt is specific enough
+    gemini_api_key: str,
+    specific_follow_up_prompt: str | None = None,
+) -> str | None: # Return single comment string or None
+    """Generates a follow-up comment using the LLM."""
+    # Re-import logger or pass it if defined globally earlier
+    import logging
+    logger = logging.getLogger(__name__)
+
+    if not original_tweet_text or not activity or not specific_follow_up_prompt:
+        logger.error("[LLM Generator] Missing data for generating follow-up comment.")
+        return None
+
+    logger.info("[LLM Generator] Generating follow-up comment...")
+
+    model_name = llm_config.get('model', 'gemini-1.5-flash') # Use consistent model
+
+    if not gemini_api_key:
+        logger.error("[LLM Generator] Error: Gemini API key not found.")
+        return None
+
+    try:
+        # Need to re-import or ensure genai is available
+        import google.generativeai as genai 
+        genai.configure(api_key=gemini_api_key)
+        model = genai.GenerativeModel(model_name)
+
+        # Extract necessary details for the prompt
+        activity_summary = activity.get('summary', 'Details unavailable')
+        activity_url = activity.get('url', '') # Get URL if available
+
+        # Format the specific follow-up prompt
+        prompt = specific_follow_up_prompt.format(
+            original_tweet_text=original_tweet_text,
+            activity_summary=activity_summary, # The formatted summary string
+            activity_url=activity_url,
+            persona=persona # Include persona if needed by the prompt
+        )
+
+        logger.info(f"""
+--- [LLM Generator] Sending Follow-up Prompt ---
+{prompt}
+---------------------------------------------
+""")
+
+        response = model.generate_content(prompt)
+        generated_comment = response.text.strip()
+
+        if not generated_comment:
+             logger.error("[LLM Generator] Error: LLM generated empty follow-up comment.")
+             return None
+
+        # Basic length check for comment (though prompts should handle it)
+        if len(generated_comment) > 280:
+             logger.warning("[LLM Generator] Truncating generated comment exceeding 280 chars.")
+             # Simple truncation, can be improved
+             generated_comment = generated_comment[:277] + "..."
+
+        logger.info(f"[LLM Generator] Generated follow-up comment: {generated_comment[:100]}...")
+        return generated_comment
+
+    except KeyError as e:
+        logger.error(f"[LLM Generator] Error formatting follow-up prompt - Missing key: {e}", exc_info=True)
+        return None
+    except AttributeError as e:
+         if 'text' not in str(e) and hasattr(response, 'prompt_feedback'):
+             logger.error(f"[LLM Generator] Error: Follow-up generation likely blocked. Feedback: {response.prompt_feedback}")
+         else:
+              logger.error(f"[LLM Generator] Error processing LLM response for follow-up: {e}", exc_info=True)
+         return None
+    except Exception as e:
+        logger.error(f"[LLM Generator] Error generating follow-up comment with LLM: {e}", exc_info=True)
+        return None
+# -------------------------------------------
+
 # Test function
 if __name__ == '__main__':
     print("Testing LLM Generator module...")
