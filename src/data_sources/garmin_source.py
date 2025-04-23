@@ -69,7 +69,6 @@ def get_activity(username: str | None, password: str | None, activity_format: st
                 # Extract relevant details (adjust keys based on garminconnect output)
                 activity_id = activity.get('activityId')
                 activity_type = activity.get('activityType', {}).get('typeKey', 'unknown')
-                print(f"  [Garmin Source Debug] Raw activity type for ID {activity_id}: {activity_type}") 
                 start_time_str = activity.get('startTimeGMT')
                 distance_meters = activity.get('distance')
                 duration_seconds = activity.get('duration')
@@ -77,7 +76,6 @@ def get_activity(username: str | None, password: str | None, activity_format: st
                 avg_hr = activity.get('averageHR')
                 max_hr = activity.get('maxHR')
                 calories = activity.get('calories')
-                print(f"  [Garmin Source Debug] Metrics for ID {activity_id}: AvgHR={avg_hr}, Cals={calories}")
                 # -------------------------------------------
 
                 try:
