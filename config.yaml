@@ -1,26 +1,34 @@
 # --- General Persona ---
-persona: "A passionate developer sharing their coding journey and automation adventures."
+# Using a neutral persona, specific tone comes from source prompts
+persona: "A tech enthusiast sharing daily updates."
 
 # --- LLM Configuration ---
 llm:
   # Model name from Google AI Studio or provider
   model: "gemini-1.5-flash"
-  # Default prompt template - Enhanced to include technical details
+  # Default prompt template - KEPT AS FALLBACK but source_prompts preferred
   default_prompt_template: |
-    As {persona}, check out my recent coding progress below.
-    Write a **concise and engaging** tweet (ideally around 200-250 chars, max 280) about these updates.
-    Focus on the **most significant achievement or theme**. Make it sound like a genuine update.
-    **Try to mention key technical details, libraries, or concepts** (e.g., React, Python, API integration) if they are apparent from the commit messages.
-    Mention the project, for example using the hashtag `#photoviewer`, if relevant.
-    Include 1 relevant hashtag and maybe 1 emoji.
-
-    Recent activities:
+    As {persona}, write a short, engaging tweet about this activity:
     {activity_summary}
-
-    Engaging Tech Tweet Draft:
-  # source_prompts: # Optional: Add specific prompts per source
-  #   github: "..."
-  #   garmin: "..."
+    Include 1 relevant hashtag. Tweet:
+  # Source-specific prompts for distinct posts
+  source_prompts:
+    github: | # Prompt focused on dev work
+      As {persona}, check out my recent coding progress on GitHub:
+      {activity_summary}
+      Write a **concise and engaging** tweet (ideally ~200 chars, max 280) about the key updates.
+      Focus on the **most significant achievement or theme**.
+      Try to mention **key technical details or libraries** if apparent.
+      Include 1 relevant tech hashtag and maybe 1 emoji.
+      Engaging Tech Tweet Draft:
+    garmin: | # Prompt focused on fitness activity
+      As {persona}, reflecting on my workout today:
+      {activity_summary}
+      Write an **upbeat and motivational** tweet (max 280 chars) about this fitness activity.
+      Mention the type of activity and maybe distance or a feeling.
+      Keep it positive and concise.
+      Include 1 relevant fitness hashtag (e.g., #fitness, #running, #garmin) and maybe 1 emoji 💪.
+      Fitness Update Tweet:
 
 # --- Data Sources Configuration ---
 data_sources:
@@ -31,12 +39,14 @@ data_sources:
     # Environment variable name holding the GitHub Personal Access Token
     pat_env_var: USER_GITHUB_PAT
     # Optional: Define how GitHub activity should appear in the {activity_summary} for the LLM
-    activity_format: "- Worked on repo {repo}: {message}"
-  # garmin:
-  #   enabled: false
-  #   username_env_var: GARMIN_USERNAME
-  #   password_env_var: GARMIN_PASSWORD
-  #   activity_format: "- Hoàn thành bài tập {activity_type} dài {distance} km."
+    activity_format: "- Worked on repo {repo}: {message}" # Translated to English
+  garmin:
+    enabled: false # Keep disabled until garmin_source.py is ready
+    # Environment variable names for Garmin credentials
+    username_env_var: GARMIN_USERNAME
+    password_env_var: GARMIN_PASSWORD
+    # Format for Garmin activity summary
+    activity_format: "- Completed a {distance:.1f} km {activity_type}" # Example format
   # instagram:
   #   enabled: false
   #   # ... config ...

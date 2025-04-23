@@ -36,8 +36,9 @@ jobs:
           X_API_SECRET: ${{ secrets.X_API_SECRET }}
           X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
           X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+          # Add Garmin secrets
+          GARMIN_USERNAME: ${{ secrets.GARMIN_USERNAME }}
+          GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
           # Add other secrets here if you enable more sources/targets
-          # GARMIN_USERNAME: ${{ secrets.GARMIN_USERNAME }}
-          # GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
           # DRY_RUN: "false" # Optional: set to "true" in secrets for testing
         run: python main.py
