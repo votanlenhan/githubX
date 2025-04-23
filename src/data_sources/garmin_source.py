@@ -126,8 +126,8 @@ def get_activity(username: str | None, password: str | None, activity_format: st
         print(f"[Garmin Source] An unexpected error occurred during processing: {e}", file=sys.stderr)
         # Consider re-raising or logging traceback for debugging
     finally:
-        # Ensure logout is called if client was initialized and logged in
-        if client and client.logged_in:
+        # Ensure logout is called if client was initialized
+        if client:
              try:
                  client.logout()
                  print("[Garmin Source] Logout successful.")
