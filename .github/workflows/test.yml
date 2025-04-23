@@ -1,0 +1,14 @@
+name: Test Workflow Visibility
+
+on:
+  push:
+    branches:
+      - master # Hoặc main nếu nhánh chính của bạn là main
+  workflow_dispatch:
+
+jobs:
+  say_hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Hello
+        run: echo "Hello World! Workflow is visible!"
