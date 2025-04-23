@@ -5,6 +5,8 @@ cffi==1.17.1
 charset-normalizer==3.4.1
 cryptography==44.0.2
 Deprecated==1.2.18
+garminconnect==0.2.26
+garth==0.5.3
 google-ai-generativelanguage==0.6.15
 google-api-core==2.24.2
 google-api-python-client==2.167.0
