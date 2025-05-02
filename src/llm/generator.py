@@ -79,7 +79,16 @@ def generate_posts(all_activities: list[Activity], llm_config: dict, persona: st
              print(f"[LLM Generator] Error processing LLM response: {e}", file=sys.stderr)
         return []
     except Exception as e:
-        print(f"[LLM Generator] Error generating report with LLM: {e}", file=sys.stderr)
+        # --- Enhanced Error Logging ---
+        error_message = f"[LLM Generator] Error generating report with LLM: {e}"
+        try:
+            # Attempt to access prompt_feedback even in generic exception
+            if hasattr(response, 'prompt_feedback'):
+                error_message += f" | Feedback: {response.prompt_feedback}"
+        except NameError: # Handle case where 'response' might not be defined yet
+            pass 
+        print(error_message, file=sys.stderr)
+        # -----------------------------
         return []
 
 # ---- NEW Function for Follow-up Comments ----
@@ -158,7 +167,16 @@ def generate_follow_up_comment(
               logger.error(f"[LLM Generator] Error processing LLM response for follow-up: {e}", exc_info=True)
          return None
     except Exception as e:
-        logger.error(f"[LLM Generator] Error generating follow-up comment with LLM: {e}", exc_info=True)
+        # --- Enhanced Error Logging for Follow-up ---
+        error_message = f"[LLM Generator] Error generating follow-up comment with LLM: {e}"
+        try:
+             # Attempt to access prompt_feedback even in generic exception
+            if hasattr(response, 'prompt_feedback'):
+                error_message += f" | Feedback: {response.prompt_feedback}"
+        except NameError:
+            pass
+        logger.error(error_message, exc_info=True)
+        # ----------------------------------------
         return None
 # -------------------------------------------
 
