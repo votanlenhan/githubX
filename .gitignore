@@ -125,4 +125,7 @@ dmypy.json
 .pyre/
 
 # pytype static analysis results
-.pytype/ 
+.pytype/
+
+# Project-specific context file
+CONTEXT.md 

@@ -22,15 +22,16 @@ llm:
       **Do not include placeholders like `[link]` or `[URL]` in the tweet.**
       End with 1 relevant tech hashtag and maybe a reflective emoji 🤔 or determined emoji 💪.
       Reflective Tech Tweet Draft:
-    garmin: | # Prompt focused on fitness activity with 'Lucas Vo' tone
-      As {persona}, reflecting on today's physical challenge:
-      {activity_summary}
-      Write an **upbeat but reflective** tweet (max 280 chars) about this fitness activity, in the 'Lucas Vo' tone.
-      Mention the distance and type (use 'workout' or 'activity' if type is 'Other'). Briefly mention a metric (HR/cals) if available.
-      Acknowledge the effort ("Pushed through...", "Tough but rewarding..."), but focus on the feeling of accomplishment or resilience.
+    garmin: | # Updated prompt to use richer activity_summary
+      As {persona}, reflecting on today's efforts:
+      {activity_summary} # This now includes activity AND daily stats like steps, sleep, stress
+      Write an **upbeat but reflective** tweet (max 280 chars) about this fitness activity and the day's context, in the 'Lucas Vo' tone.
+      Briefly highlight the main activity ({activity_type} for {distance:.1f}km / {duration_formatted}).
+      Optionally, connect it to a daily stat if interesting (e.g., "despite only {sleep_duration_formatted} sleep", "hit {daily_steps} steps", "stress was {stress_qualifier}").
+      Focus on accomplishment, resilience, or just documenting the day.
       Keep it positive and concise.
-      Include 1 relevant fitness hashtag and maybe 1 suitable emoji (e.g., 💪, 🙏, 🌱).
-      Resilient Fitness Update:
+      Include 1 relevant fitness hashtag and maybe 1-2 suitable emoji (e.g., 💪, 🙏, 🌱, 🚶, 😴, 💯).
+      Comprehensive Fitness Update:
 
     # ---- NEW: Follow-up Comment Prompts ----
     follow_up_prompts:
@@ -42,11 +43,11 @@ llm:
         Maybe link directly to the most relevant commit/activity mentioned.
         Keep the 'Lucas Vo' reflective tone.
         Follow-up Comment Draft:
-      garmin: | # Prompt for Garmin follow-up comment
+      garmin: | # Updated Garmin follow-up prompt
         Original tweet: {original_tweet_text}
-        Activity details: {activity_summary} # Includes metrics like HR/Cals
+        Activity details: {activity_summary} # Includes activity, metrics, AND daily context (steps, sleep, stress etc.)
         Relevant link: {activity_url} # Garmin activity URL
-        Write a brief follow-up comment (max 280 chars) perhaps adding another detail (like duration if not mentioned) or a related thought.
+        Write a brief follow-up comment (max 280 chars) perhaps adding another interesting detail from the context (e.g., "Sleep score was {sleep_score}", "Deep sleep: {deep_sleep_percent}%", "Resting HR: {resting_hr}", "Body Battery change: +{body_battery_charged}/-{body_battery_drained}") or linking to the activity.
         Keep the 'Lucas Vo' upbeat but reflective tone.
         Follow-up Comment Draft:
 
@@ -65,8 +66,8 @@ data_sources:
     # Environment variable names for Garmin credentials
     username_env_var: GARMIN_USERNAME
     password_env_var: GARMIN_PASSWORD
-    # Updated format to include HR and calories placeholders
-    activity_format: "- Completed a {distance:.1f} km {activity_type} (Avg HR: {avg_hr} bpm, Cals: {calories})"
+    # Updated format to include HR, calories, AND new daily stats placeholders
+    activity_format: "- Completed a {distance:.1f} km {activity_type} ({duration_formatted}, Avg HR: {avg_hr} bpm, Cals: {calories}). Daily: {daily_steps} steps, Sleep: {sleep_duration_formatted} (Score: {sleep_score}, Deep: {deep_sleep_percent}%), Stress: {stress_qualifier} (Avg: {avg_stress_level}), Resting HR: {resting_hr}, Body Battery: +{body_battery_charged}/-{body_battery_drained}."
   # instagram:
   #   enabled: false
   #   # ... config ...
