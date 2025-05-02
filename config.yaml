@@ -38,7 +38,7 @@ llm:
       {activity_summary} # Contains formatted daily stats
       Instructions:
       - Write in the 'Lucas Vo' tone (reflective, maybe a bit self-deprecating or witty).
-      - **Don't just list stats.** Pick 1-2 interesting stats (e.g., sleep score, steps, stress, body battery) and add a brief, **personal or funny comment** about them. (e.g., "Survived on {sleep_duration_formatted} sleep! 😴", "Only {daily_steps} steps? Must've been glued to the chair. 😅", "Body Battery started at {body_battery_charged}? Ready to roll! 🔋").
+      - **Don't just list stats.** Pick 1-2 interesting stats (e.g., sleep score, steps, stress, body battery) and add a brief, **personal or funny comment** about them. (e.g., \"Survived on {{sleep_duration_formatted}} sleep! 😴\", \"Only {{daily_steps}} steps? Must've been glued to the chair. 😅\", \"Body Battery started at {{body_battery_charged}}? Ready to roll! 🔋\").
       - Keep it concise and under 280 characters.
       - Include exactly one relevant wellness hashtag (e.g., #DailyStats #GarminLife #WellnessJourney #SleepScore).
       - Include 1-2 suitable emojis that match the tone.
