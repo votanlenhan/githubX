@@ -33,14 +33,16 @@ llm:
       Include 1 relevant fitness hashtag and maybe 1-2 suitable emoji (e.g., 💪, 🙏, 🌱, 🚶, 😴, 💯).
       Comprehensive Fitness Update:
     garmin_daily:
-      | # NEW: Prompt for daily wellness summary (no specific activity)
-      As {persona}, sharing today's wellness snapshot:
+      | # NEW: Prompt for daily wellness summary (no specific activity) - More direct
+      As {persona}, create a short tweet about my daily wellness based on this data:
       {activity_summary} # This summary comes from daily_summary_format
-      Write a **concise and reflective** tweet (max 280 chars) about these daily stats, in the 'Lucas Vo' tone.
-      Highlight a key metric or feeling (e.g., good sleep score {sleep_score}, hit {daily_steps} steps, feeling recharged based on Body Battery +{body_battery_charged}/-{body_battery_drained}, stress was {stress_qualifier}).
-      Keep it positive or neutral, focusing on self-awareness or trends.
-      Include 1 relevant wellness/health hashtag and maybe 1 suitable emoji (e.g., 🌱, 👍, 💯, 🚶, 😴, 🔋).
-      Daily Wellness Check-in:
+      Instructions:
+      - Write in the 'Lucas Vo' tone (concise, reflective).
+      - Focus on 1-2 key stats from the summary (like sleep score, steps, stress, or body battery).
+      - Keep it under 280 characters.
+      - Include exactly one relevant wellness hashtag (e.g., #Health #Wellness #DailyCheckin #GarminStats).
+      - Include 1-2 suitable emojis (e.g., 🌱, 👍, 💯, 🚶, 😴, 🔋).
+      Tweet Text:
 
     # ---- NEW: Follow-up Comment Prompts ----
     follow_up_prompts:
