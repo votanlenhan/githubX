@@ -22,11 +22,12 @@ def post_tweet(
         logger.error("[Twitter Poster] Missing Twitter API credentials.")
         return None
 
-    # Prepare tweet parameters
+    # Prepare tweet parameters - Base parameters always include text
     tweet_params = {"text": text}
     log_action = "tweet"
+    # If it's a reply, add the in_reply_to_tweet_id parameter directly
     if in_reply_to_tweet_id:
-        tweet_params["reply"] = {"in_reply_to_tweet_id": in_reply_to_tweet_id}
+        tweet_params["in_reply_to_tweet_id"] = in_reply_to_tweet_id
         log_action = f"reply to {in_reply_to_tweet_id}"
 
     logger.info(f"[Twitter Poster] Attempting to post {log_action}: {text[:100]}...")

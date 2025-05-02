@@ -28,7 +28,7 @@ def run_update():
     # 1. Load Configuration
     config = load_config()
     # ---- DEBUG: Print config['llm'] immediately after loading ----
-    print(f"[DEBUG] config.get('llm') right after load_config: {config.get('llm')}")
+    # print(f"[DEBUG] config.get('llm') right after load_config: {config.get('llm')}") # No longer needed
     # ----------------------------------------------------------
     if not config:
         print("Exiting due to configuration loading failure.", file=sys.stderr)
@@ -103,7 +103,15 @@ def run_update():
                          print(f"Skipping {source_key} source due to missing username or PAT secret.", file=sys.stderr)
                 elif source_key == 'garmin':
                     if username and password: # Garmin needs username and password
-                         source_activities = source_module.get_activity(username, password, activity_format)
+                         # ---- NEW: Pass daily_summary_format to get_activity ----
+                         daily_format = source_conf.get('daily_summary_format')
+                         source_activities = source_module.get_activity(
+                             username,
+                             password,
+                             activity_format,
+                             daily_summary_format=daily_format
+                         )
+                         # ----------------------------------------------------------
                     else:
                          print(f"Skipping {source_key} source due to missing username or password secret.", file=sys.stderr)
                 # Add conditions for other sources here...
@@ -117,9 +125,17 @@ def run_update():
                 print(f"Found {len(source_activities)} activities from {source_key}.")
                 first_activity_for_source = source_activities[0] # Get the first activity for context
 
-                specific_prompt = source_prompts.get(source_key)
+                # --- Determine the correct prompt key based on activity source ---
+                prompt_key_to_use = source_key # Default to the main source key ('github', 'garmin')
+                if first_activity_for_source.get('source') == 'garmin_daily':
+                    prompt_key_to_use = 'garmin_daily' # Use the specific key for daily summary
+                # ------------------------------------------------------------------
+                
+                # --- Use the determined prompt key to get the template ---
+                specific_prompt = source_prompts.get(prompt_key_to_use)
+                # -------------------------------------------------------
                 if not specific_prompt:
-                    print(f"Warning: No specific prompt found for source '{source_key}' in config. Using default.", file=sys.stderr)
+                    print(f"Warning: No specific prompt found for source key '{prompt_key_to_use}' in config. Using default.", file=sys.stderr)
                     # Fallback to default handled inside generate_posts
 
                 # Generate posts for this source's activities
@@ -138,7 +154,7 @@ def run_update():
                     # --- Store generated text with context ---
                     for text in generated_posts_texts:
                         generated_content_list.append({
-                            "source": source_key,
+                            "source": prompt_key_to_use, # Use the specific source (e.g., garmin_daily)
                             "tweet_text": text,
                             "first_activity": first_activity_for_source # Associate with the first activity
                         })
@@ -165,7 +181,7 @@ def run_update():
         # --------------------------------------------------------------------------
         
         # ---- DEBUG: Check the correctly loaded follow-up prompts ----
-        print(f"[DEBUG] Follow-up prompts dictionary: {follow_up_prompts}")
+        # print(f"[DEBUG] Follow-up prompts dictionary: {follow_up_prompts}") # No longer needed
         # -----------------------------------------------
 
         content_to_send = generated_content_list[:max_posts]
@@ -199,11 +215,11 @@ def run_update():
 
                         # --- Attempt Follow-up Comment ---
                         if enable_follow_up and first_activity:
-                            # ---- DEBUG: Print source_key and lookup result ----
+                            # ---- Select follow-up prompt based on the *actual* source_key ('github', 'garmin', or 'garmin_daily') ----
                             print(f"[DEBUG] Attempting follow-up for source_key: '{source_key}'")
-                            follow_up_prompt = follow_up_prompts.get(source_key) # Now this should work
+                            follow_up_prompt = follow_up_prompts.get(source_key)
                             print(f"[DEBUG] Result of follow_up_prompts.get('{source_key}'): {follow_up_prompt is not None}")
-                            # ---------------------------------------------------
+                            # ------------------------------------------------------------------------------------------------
                             if follow_up_prompt:
                                 print(f"Generating follow-up comment for {source_key} tweet...")
                                 comment_text = generate_follow_up_comment(

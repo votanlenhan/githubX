@@ -34,10 +34,17 @@ def format_duration(seconds):
     minutes = (seconds % 3600) // 60
     return f"{hours}h {minutes}m"
 
-def get_activity(username: str | None, password: str | None, activity_format: str) -> list[Activity]:
+def get_activity(
+    username: str | None, 
+    password: str | None, 
+    activity_format: str, 
+    daily_summary_format: str | None = None # NEW: Add format for daily summary
+    ) -> list[Activity]:
     """
     Fetches recent Garmin activities (last 24 hours) and related daily stats/sleep
     using the garminconnect library.
+    If no activities are found but daily stats are available, creates a pseudo-activity
+    for the daily summary.
     """
     activities: list[Activity] = []
     if not Garmin: # Check if library import failed
@@ -225,6 +232,33 @@ def get_activity(username: str | None, password: str | None, activity_format: st
                 activities.append(activity_entry)
                 print(f"  [Garmin Source] Added activity: {summary}")
 
+        # --- NEW: Create daily summary pseudo-activity if no real activities found ---
+        if not activities and daily_summary_format and daily_context.get('daily_steps', 'N/A') != 'N/A':
+            print("[Garmin Source] No specific activities found, but daily data exists. Creating daily summary entry.")
+            try:
+                # Format summary using daily_summary_format and daily_context
+                summary = daily_summary_format.format(**daily_context)
+                
+                # Create the pseudo-activity entry
+                daily_entry: Activity = {
+                    "source": "garmin_daily", # Special source key
+                    "timestamp": datetime.combine(end_date, datetime.min.time(), tzinfo=timezone.utc), # Timestamp for the summary day
+                    "type": "daily_summary",
+                    "summary": summary,
+                    "details": {
+                        # Include raw daily context in details
+                        "daily_context": daily_context,
+                    },
+                    "url": "https://connect.garmin.com/modern/daily-summary" # General link or None
+                }
+                activities.append(daily_entry)
+                print(f"  [Garmin Source] Added daily summary: {summary}")
+            except KeyError as e:
+                print(f"[Garmin Source] Warning: Key '{e}' not found for daily_summary_format...", file=sys.stderr)
+            except Exception as e:
+                print(f"[Garmin Source] Warning: Error formatting daily summary entry: {e}", file=sys.stderr)
+        # --------------------------------------------------------------------------
+
     except GarminConnectAuthenticationError:
         print(f"[Garmin Source] Error: Authentication failed for user {username}. Check credentials.", file=sys.stderr)
     except GarminConnectConnectionError as e:
@@ -256,9 +290,11 @@ if __name__ == '__main__':
     # test_pass = os.environ.get("GARMIN_PASSWORD")
     # # Updated test format to include new placeholders
     # test_format = "- Did a {distance:.1f} km {activity_type} ({duration_formatted}, Avg HR: {avg_hr}). Steps: {daily_steps}, Sleep: {sleep_duration_formatted} ({deep_sleep_percent}% deep), Stress: {stress_qualifier}.\"
+    # # Add daily summary format for testing
+    # daily_format = "- Daily: {daily_steps} steps, Sleep {sleep_duration_formatted} (Score: {sleep_score}), Stress: {stress_qualifier}.\"
     # if test_user and test_pass:
-    #     results = get_activity(test_user, test_pass, test_format)
-    #     print(f"\nRetrieved {len(results)} activities:")
+    #     results = get_activity(test_user, test_pass, test_format, daily_summary_format=daily_format)
+    #     print(f"\nRetrieved {len(results)} activities/summaries:")
     #     for act in results:
     #         print(f"  - {act['summary']} ({act['timestamp']})")
     # else:
