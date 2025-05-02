@@ -32,13 +32,12 @@ llm:
       Keep it positive and concise.
       Include 1 relevant fitness hashtag and maybe 1-2 suitable emoji (e.g., 💪, 🙏, 🌱, 🚶, 😴, 💯).
       Comprehensive Fitness Update:
-    garmin_daily:
-      | # NEW: Prompt for daily wellness summary (no specific activity) - More direct
-      As {persona}, create a short tweet about my daily wellness based on this data:
+    garmin_daily: | # Updated: Prompt for more detailed daily wellness summary
+      As {persona}, create a short tweet summarizing my daily wellness based on this data:
       {activity_summary} # This summary comes from daily_summary_format
       Instructions:
       - Write in the 'Lucas Vo' tone (concise, reflective).
-      - Focus on 1-2 key stats from the summary (like sleep score, steps, stress, or body battery).
+      - Include **several key stats** from the summary (e.g., steps, sleep score, stress, body battery, resting HR) to give a fuller picture.
       - Keep it under 280 characters.
       - Include exactly one relevant wellness hashtag (e.g., #Health #Wellness #DailyCheckin #GarminStats).
       - Include 1-2 suitable emojis (e.g., 🌱, 👍, 💯, 🚶, 😴, 🔋).
@@ -58,14 +57,13 @@ llm:
         Original tweet: {original_tweet_text}
         Activity details: {activity_summary} # Includes activity, metrics, AND daily context (steps, sleep, stress etc.)
         Relevant link: {activity_url} # Garmin activity URL
-        Write a brief follow-up comment (max 280 chars) perhaps adding another interesting detail from the context (e.g., "Sleep score was {sleep_score}", "Deep sleep: {deep_sleep_percent}%", "Resting HR: {resting_hr}", "Body Battery change: +{body_battery_charged}/-{body_battery_drained}") or linking to the activity.
+        Write a brief follow-up comment (max 280 chars) perhaps adding another interesting detail from the context (e.g., \"Sleep score was {{sleep_score}}\", \"Deep sleep: {{deep_sleep_percent}}%\", \"Resting HR: {{resting_hr}}\", \"Body Battery change: +{{body_battery_charged}}/-{{body_battery_drained}}\") or linking to the activity.
         Keep the 'Lucas Vo' upbeat but reflective tone.
         Follow-up Comment Draft:
-      # Optional: Add follow-up for daily summary if needed, e.g., link to Connect dashboard
-      garmin_daily: | # Follow-up for daily summary - highlight another stat
+      garmin_daily: | # Fixed: Escaped example placeholders
         Original tweet: {original_tweet_text}
         Daily details: {activity_summary} # Contains all daily stats
-        Write a brief follow-up comment (max 280 chars) mentioning another interesting stat from the summary not focused on in the original tweet (e.g., Resting HR: {resting_hr}, Stress level: {stress_qualifier}, Body Battery change: +{body_battery_charged}/-{body_battery_drained}).
+        Write a brief follow-up comment (max 280 chars) mentioning another interesting stat from the summary not focused on in the original tweet (e.g., Resting HR: {{resting_hr}}, Stress level: {{stress_qualifier}}, Body Battery change: +{{body_battery_charged}}/-{{body_battery_drained}}).
         Keep the 'Lucas Vo' reflective tone.
         Follow-up Comment Draft:
 
