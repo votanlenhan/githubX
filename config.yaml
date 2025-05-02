@@ -62,11 +62,12 @@ llm:
         Keep the 'Lucas Vo' upbeat but reflective tone.
         Follow-up Comment Draft:
       # Optional: Add follow-up for daily summary if needed, e.g., link to Connect dashboard
-      # garmin_daily: |
-      #   Original tweet: {original_tweet_text}
-      #   Daily details: {activity_summary}
-      #   Write a brief follow-up, maybe linking to Garmin Connect.
-      #   Follow-up Comment Draft:
+      garmin_daily: | # Follow-up for daily summary - highlight another stat
+        Original tweet: {original_tweet_text}
+        Daily details: {activity_summary} # Contains all daily stats
+        Write a brief follow-up comment (max 280 chars) mentioning another interesting stat from the summary not focused on in the original tweet (e.g., Resting HR: {resting_hr}, Stress level: {stress_qualifier}, Body Battery change: +{body_battery_charged}/-{body_battery_drained}).
+        Keep the 'Lucas Vo' reflective tone.
+        Follow-up Comment Draft:
 
 # --- Data Sources Configuration ---
 data_sources:
