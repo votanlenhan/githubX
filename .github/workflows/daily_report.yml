@@ -2,8 +2,8 @@ name: Daily Activity Post - githubX
 
 on:
   schedule:
-    # Runs every day at 4:00 PM UTC (11:00 PM ICT)
-    - cron: "0 16 * * *"
+    # Runs every day at 4:55 PM UTC (11:55 PM ICT)
+    - cron: "55 16 * * *"
   workflow_dispatch: # Keep manual trigger
 
 jobs:
