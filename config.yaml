@@ -46,27 +46,29 @@ llm:
 
     # ---- NEW: Follow-up Comment Prompts ----
     follow_up_prompts:
-      github: | # Prompt for GitHub follow-up comment
+      github: | # Updated: Avoid repetition, add specific context
         Original tweet: {original_tweet_text}
         Activity details: {activity_summary}
-        Relevant link: {activity_url} # Use the commit/activity URL
-        Write a brief follow-up comment (max 280 chars) providing a bit more context or a link.
-        Maybe link directly to the most relevant commit/activity mentioned.
+        Relevant link: {activity_url} # Most recent commit/activity URL
+        Write a brief follow-up comment (max 280 chars) providing **new context or a specific link** not easily inferred from the original tweet.
+        **Avoid simply rephrasing the tweet.** Maybe link to a specific file changed or a related issue if relevant.
         Keep the 'Lucas Vo' reflective tone.
-        Follow-up Comment Draft:
-      garmin: | # Updated Garmin follow-up prompt
+        Adding Specific Context:
+      garmin: | # Updated: Avoid repetition, add different metric/detail
         Original tweet: {original_tweet_text}
-        Activity details: {activity_summary} # Includes activity, metrics, AND daily context (steps, sleep, stress etc.)
+        Activity details: {activity_summary} # Includes activity, metrics, AND daily context
         Relevant link: {activity_url} # Garmin activity URL
-        Write a brief follow-up comment (max 280 chars) perhaps adding another interesting detail from the context (e.g., \"Sleep score was {{sleep_score}}\", \"Deep sleep: {{deep_sleep_percent}}%\", \"Resting HR: {{resting_hr}}\", \"Body Battery change: +{{body_battery_charged}}/-{{body_battery_drained}}\") or linking to the activity.
+        Write a brief follow-up comment (max 280 chars) mentioning a **different detail or metric** from the activity/day that wasn't the focus of the original tweet (e.g., if tweet focused on distance/feel, mention Avg HR {{avg_hr}} or Sleep Score {{sleep_score}}; if tweet mentioned sleep, comment on Stress {{stress_qualifier}}).
+        **Do not repeat the main point of the tweet.** Add a small observation.
         Keep the 'Lucas Vo' upbeat but reflective tone.
-        Follow-up Comment Draft:
-      garmin_daily: | # Updated: More engaging follow-up comment
+        Adding Another Detail:
+      garmin_daily: | # Updated: Avoid repetition, focus on a different stat
         Original tweet: {original_tweet_text}
         Daily details: {activity_summary} # Contains all daily stats
-        Write a brief, **slightly witty follow-up comment** (max 280 chars) mentioning another stat from the summary. Add a small observation. (e.g., "Also, resting HR was {{resting_hr}} - guess the calm didn't last! 😂", "Stress level: {{stress_qualifier}}. Checks out. 🤷‍♂️", "Deep sleep at {{deep_sleep_percent}}%... dreaming of code? 🤔").
+        Write a brief, **slightly witty follow-up comment** (max 280 chars) mentioning a **different stat** than the one(s) highlighted in the original tweet. Add a small, specific observation about it.
+        **Avoid repeating info from the original tweet.** (e.g., If tweet focused on sleep, comment on Resting HR: \"Resting HR at {{resting_hr}} today - interesting trend!\"; if tweet focused on steps, comment on Stress: \"Stress was {{stress_qualifier}}, explains a lot! 😅\").
         Keep the 'Lucas Vo' reflective tone.
-        Witty Follow-up Comment:
+        Adding a Different Stat:
 
 # --- Data Sources Configuration ---
 data_sources:
