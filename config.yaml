@@ -22,16 +22,16 @@ llm:
       **Do not include placeholders like `[link]` or `[URL]` in the tweet.**
       End with 1 relevant tech hashtag and maybe a reflective emoji 🤔 or determined emoji 💪.
       Reflective Tech Tweet Draft:
-    garmin: | # Updated prompt to use richer activity_summary
-      As {persona}, reflecting on today's efforts:
-      {activity_summary} # This now includes activity AND daily stats like steps, sleep, stress
-      Write an **upbeat but reflective** tweet (max 280 chars) about this fitness activity and the day's context, in the 'Lucas Vo' tone.
-      Briefly highlight the main activity ({activity_type} for {distance:.1f}km / {duration_formatted}).
-      Optionally, connect it to a daily stat if interesting (e.g., "despite only {sleep_duration_formatted} sleep", "hit {daily_steps} steps", "stress was {stress_qualifier}").
-      Focus on accomplishment, resilience, or just documenting the day.
-      Keep it positive and concise.
-      Include 1 relevant fitness hashtag and maybe 1-2 suitable emoji (e.g., 💪, 🙏, 🌱, 🚶, 😴, 💯).
-      Comprehensive Fitness Update:
+    garmin: | # Updated: Focus on feelings, less on stats
+      As {persona}, reflecting on today's physical activity:
+      {activity_summary} # Provides context: Activity type, distance, duration, avg HR, cals, daily steps, sleep, stress etc.
+      Write an **engaging and personal** tweet (max 280 chars) about this activity, in the 'Lucas Vo' tone (reflective, maybe witty).
+      **Focus on the feeling or experience**, not just listing stats. What did it feel like? What thoughts came up? Was it tough, refreshing, mindful?
+      You can *briefly* mention a specific achievement (like distance or duration) or a surprising daily stat (like low sleep affecting it), but the core should be the personal reflection.
+      (e.g., \"Felt sluggish starting the {{activity_type}} after only {{sleep_duration_formatted}} sleep, but pushed through! 💪 Mind over matter today.\", \"Cleared my head with a {{distance:.1f}}km {{activity_type}}. Nature's therapy! 🌱\", \"That {{activity_type}} was tougher than expected! Glad it's done. Time to refuel. 🙏\").
+      Keep it positive, resilient, or reflectively honest.
+      Include 1 relevant fitness/mood hashtag and 1-2 suitable emojis.
+      Personal Fitness Reflection:
     garmin_daily:
       | # Updated: Injecting more personality/humor into daily summary
       As {persona}, create a short, **engaging and slightly humorous** tweet about my daily wellness based on this data:
